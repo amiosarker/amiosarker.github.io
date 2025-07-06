@@ -1,0 +1,64 @@
+<section style="max-width: 700px; margin: auto; font-family: sans-serif; line-height: 1.6;">
+  <h2>Binary Clock LED Demo</h2>
+  <p>
+    This Arduino project demonstrates a simple binary clock using 6 LEDs connected to digital pins 0 through 5. The microcontroller counts seconds and lights up the LEDs to represent the current second (from 0 to 59) in binary format.
+  </p>
+
+  <h3>Features:</h3>
+  <ul>
+    <li>Counts from 0 to 59, refreshing every second.</li>
+    <li>Binary output displayed using 6 LEDs.</li>
+    <li>Uses recursion to efficiently light LEDs according to binary digits.</li>
+  </ul>
+
+  <h3>Hardware Requirements:</h3>
+  <ul>
+    <li>Arduino board (tested on IDE v1.8.13)</li>
+    <li>6 LEDs</li>
+    <li>6 current-limiting resistors (220Ω recommended)</li>
+    <li>Wires and breadboard</li>
+  </ul>
+
+  <h3>Code Overview:</h3>
+  <p>
+    The <code>loop()</code> function increments a counter every second, wrapping it at 60 to simulate a one-minute cycle. The <code>lights()</code> function recursively checks each bit of the counter value and turns on/off the corresponding LED.
+  </p>
+
+  <pre style="background: #f4f4f4; padding: 1em; overflow-x: auto;">
+#include &lt;Arduino.h&gt;
+
+const int NUM_LEDS = 6;
+const int DELAY_LED = 1000;
+int time = 0;
+int normalized_time = 0;
+
+void lights(int input, int base) {
+  if (base &lt; 0) return;
+  int bit = (input &gt;&gt; base) &amp; 1;
+  digitalWrite(base, bit ? HIGH : LOW);
+  lights(input, base - 1);
+}
+
+void setup() {
+  for (int i = 0; i &lt; NUM_LEDS; i++) {
+    pinMode(i, OUTPUT);
+  }
+}
+
+void loop() {
+  time++;
+  normalized_time = time % 60;
+  lights(normalized_time, NUM_LEDS - 1);
+  delay(DELAY_LED);
+}
+  </pre>
+
+  <p>
+    It's a great introductory project to understand binary numbers, recursion, and hardware interfacing with the Arduino platform.
+  </p>
+<p>
+    <a href="https://github.com/amiosarker/piino_lab/blob/main/arduino/binary_led_clock/binary_led_clock.ino" target="_blank" rel="noopener">
+        View the full Arduino source code on GitHub
+    </a>
+</p>
+</section>

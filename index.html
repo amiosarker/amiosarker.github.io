@@ -81,25 +81,25 @@
         <section id="about">
             <h2>About Me</h2>
             <p>
-                Hi! I'm Amio Sarker, a passionate software developer with experience in web development, programming, and building creative solutions. I enjoy working on challenging projects and learning new technologies.
+                Hi! I'm Amio Sarker. TODO
             </p>
         </section>
         <section id="projects">
             <h2>Projects</h2>
             <div class="projects">
                 <div class="project">
-                    <h3>Project One</h3>
-                    <p>A brief description of your first project. What does it do? What technologies did you use?</p>
-                    <a href="#" target="_blank">View on GitHub</a>
+                    <h3>Binary clock</h3>
+                    <p>A binary clock implemented in HTML, CSS, and JavaScript. Displays the current time in binary format with a visual grid.</p>
+                    <a href="https://github.com/piino_lab/binary_clock.html" target="_blank">Binary clock</a>
                 </div>
                 <div class="project">
                     <h3>Project Two</h3>
-                    <p>A brief description of your second project. Highlight any interesting features or challenges.</p>
+                    <p>TODO.</p>
                     <a href="#" target="_blank">View on GitHub</a>
                 </div>
                 <div class="project">
                     <h3>Project Three</h3>
-                    <p>Describe another project here. Mention the stack and what you learned.</p>
+                    <p>TODO</p>
                     <a href="#" target="_blank">View on GitHub</a>
                 </div>
             </div>
@@ -107,7 +107,19 @@
         <section id="contact">
             <h2>Contact</h2>
             <p>
-                Feel free to reach out via email: <a href="mailto:amiosarker@example.com">amiosarker@example.com</a>
+                Feel free to reach out via email: 
+                <a href="#" id="email-link">[email protected]</a>
+                <script>
+                    // Obfuscate email to reduce spam
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var user = 'amiosarker';
+                        var domain = 'gmail.com';
+                        var email = user + '@' + domain;
+                        var link = document.getElementById('email-link');
+                        link.textContent = email;
+                        link.href = 'mailto:' + email;
+                    });
+                </script>
             </p>
             <p>
                 Or connect with me on 
