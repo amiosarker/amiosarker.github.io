@@ -1,0 +1,245 @@
+<section style="max-width: 700px; margin: auto; font-family: sans-serif; line-height: 1.6;">
+  <h2>MediaPipe Hand Tracking & Servo Control</h2>
+
+  <a href="../index.html">
+    Return to Projects
+  </a>
+  
+  <p>
+    This project connects computer vision with robotics! Using MediaPipe to track hand landmarks in real time via a webcam, the Python script calculates finger joint angles and streams a list of rotation values over serial to an Arduino Mega 2560. The Arduino then drives servos to mirror your hand movements live.
+  </p>
+
+  <video src="../images/mediapipe_hand.mov" controls loop autoplay muted playsinline style="max-width:100%; display:block; margin: 1em auto; border-radius: 16px;"></video>
+
+  <h3>Features:</h3>
+  <ul>
+    <li>Real-time 3D hand landmark tracking using Google MediaPipe.</li>
+    <li>Dynamic angle calculation for individual finger joints in Python.</li>
+    <li>Serial communication to transmit target angle lists to the micro-controller.</li>
+    <li>Multi-servo control running on an Arduino Mega 2560.</li>
+  </ul>
+
+  <h3>Hardware & Software Requirements:</h3>
+  <ul>
+    <li>Webcam</li>
+    <li>Arduino Mega 2560</li>
+    <li>Robotic Hand Kit / Servo Motors (e.g., SG90 or MG996R)</li>
+    <li>External 5V Power Supply for servos</li>
+    <li>Python 3.x (with <code>mediapipe</code>, <code>opencv-python</code>, and <code>pyserial</code>)</li>
+  </ul>
+
+  <h3>Engineering Challenges & Things I learned:</h3>
+  <p>
+    I had many issues with the servos not working, not realizing I had the wrong type of servo. I learned more about interfacinng with servos as well as using serial communication between the computer and the arduino and also how to use the mediapipe library for hand tracking.
+  </p>
+
+  ---
+
+  <h3>1. Python Script (Hand Tracking & Angle Math)</h3>
+  <p>
+    This script captures the video feed, extracts joint coordinates, calculates vector angles for each finger, and sends the formatted angle string over the serial port.
+  </p>
+
+  <pre style="background: #f4f4f4; padding: 1em; overflow-x: auto; border-radius: 8px;">
+import cv2 
+from matplotlib.pylab import roll
+import mediapipe as mp
+import time
+import math
+import serial
+
+ser = serial.Serial('/dev/cu.usbmodem11101', 115200, timeout=1)
+time.sleep(2)  # give Arduino time to reset
+
+mp_drawing = mp.solutions.drawing_utils
+mp_hands = mp.solutions.hands
+
+
+cap = cv2.VideoCapture(0)
+cap.set(3, 1280)
+cap.set(4, 720)
+
+
+
+def main():
+    angledata = [180, 180, 180, 180, 180]  
+    with mp_hands.Hands(
+        max_num_hands=2,
+        min_detection_confidence=0.5,
+        min_tracking_confidence=0.5
+    ) as hands:
+        
+        while True:
+
+            attempt = 0
+            success, image = cap.read()
+            while not success and attempt < 5:
+                print("Failed to capture image. Retrying...")
+                time.sleep(0.2)  # Wait for a moment before retrying
+                success, image = cap.read()
+                attempt += 1
+            if not success:
+                print("Failed to capture image after multiple attempts. Exiting.")
+                break
+
+            img = cv2.flip(image, 1)
+            h, w, _ = img.shape
+            rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            results = hands.process(rgb)
+
+            if results.multi_hand_landmarks:
+                for hand_landmarks in results.multi_hand_landmarks:
+                    mp_drawing.draw_landmarks(
+                        img, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+                    
+                    fingertips = {
+                        "Thumb Tip": hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP],
+                        "Index Finger Tip": hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP],
+                        "Middle Finger Tip": hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP],
+                        "Ring Finger Tip": hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP],
+                        "Pinky Tip": hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
+                    }
+                    fingerpips = {
+                        "Thumb PIP": hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_IP],
+                        "Index Finger PIP": hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_PIP],
+                        "Middle Finger PIP": hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_PIP],
+                        "Ring Finger PIP": hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_PIP],
+                        "Pinky PIP": hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_PIP]
+                    }
+
+                    # for name, landmark in fingertips.items():
+                    #     x = int(landmark.x * w)
+                    #     y = int(landmark.y * h)
+                    #     cv2.circle(img, (x, y), 10, (0, 255, 0), cv2.FILLED)
+                    #     if fingerpips[name.replace("Tip", "PIP")].y > landmark.y:
+                    #         cv2.putText(img, "UP", (x + 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+                    #     else:
+                    #         cv2.putText(img, "DOWN", (x + 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+
+                    for name, landmark in fingerpips.items():
+                        px = landmark.x
+                        py = landmark.y
+                        pz = landmark.z
+
+                        tx = fingertips[name.replace("PIP", "Tip")].x
+                        ty = fingertips[name.replace("PIP", "Tip")].y
+                        tz = fingertips[name.replace("PIP", "Tip")].z
+
+                        wx = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST].x
+                        wy = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST].y
+                        wz = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST].z
+
+                        tp = math.sqrt((tx - px)**2 + (ty - py)**2 + (tz - pz)**2)
+                        tw = math.sqrt((wx - tx)**2 + (wy - ty)**2 + (wz - tz)**2)
+                        wp = math.sqrt((wx - px)**2 + (wy - py)**2 + (wz - pz)**2)
+
+                        if tp == 0 or tw == 0:
+                            continue
+
+                        value = (tp**2 + tw**2 - wp**2) / (2 * tp * tw)
+                        value = max(-1.0, min(1.0, value))
+
+                        angle = int(math.degrees(math.acos(value)))
+
+                        # Store angles in array
+                        if name == "Index Finger PIP":
+                            angledata[0] = angle
+
+                        elif name == "Middle Finger PIP":
+                            angledata[1] = angle
+
+                        elif name == "Ring Finger PIP":
+                            angledata[2] = angle
+
+                        elif name == "Pinky PIP":
+                            angledata[3] = angle
+
+                        elif name == "Thumb PIP":
+                            angledata[4] = angle
+
+
+                    # SEND ONCE AFTER ALL FINGERS ARE UPDATED
+                    message = ",".join(map(str, angledata)) + "\n"
+                    print(message.strip())
+
+                    ser.write(message.encode())
+
+                    time.sleep(0.01)
+
+
+
+            cv2.imshow("handy", img)
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
+  </pre>
+
+  <h3>2. Arduino Mega 2560 Script (Servo Receiver)</h3>
+  <p>
+    The code running on the Mega 2560 listens on the serial buffer, parses the incoming array of angles, and updates the corresponding servo signals.
+  </p>
+
+  <pre style="background: #f4f4f4; padding: 1em; overflow-x: auto; border-radius: 8px;">
+#include <Servo.h>
+
+Servo indexServo;
+Servo middleServo;
+Servo ringServo;
+Servo pinkyServo;
+Servo thumbServo;
+
+int values[5];
+
+void setup() {
+  Serial.begin(115200);
+
+  indexServo.attach(3);
+  middleServo.attach(5);
+  ringServo.attach(6);
+  pinkyServo.attach(9);
+  thumbServo.attach(10);
+}
+
+void loop() {
+
+  if (Serial.available()) {
+
+    String data = Serial.readStringUntil('\n');
+
+    int parsed = sscanf(
+      data.c_str(),
+      "%d,%d,%d,%d,%d",
+      &values[0],
+      &values[1],
+      &values[2],
+      &values[3],
+      &values[4]
+    );
+
+    // Make sure all 5 numbers were received
+    if (parsed == 5) {
+
+      Serial.println(data);
+
+      indexServo.write(values[0]);
+      middleServo.write(values[1]);
+      ringServo.write(values[2]);
+      pinkyServo.write(values[3]);
+      thumbServo.write(values[4]);
+    }
+  }
+}
+  </pre>
+
+  <p>
+    <a href="https://github.com/amiosarker/arduino_hand_v1" target="_blank" rel="noopener">
+      View the complete project repository on GitHub
+    </a>
+  </p>
+</section>
