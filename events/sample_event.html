@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sample Event Template | Amio Sarker</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.65;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      padding: 35px 20px;
+      text-align: center;
+      border-bottom: 3px solid #3b82f6;
+    }
+
+    header h1 {
+      margin: 0 0 10px 0;
+      font-size: 2.1rem;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      margin: 0;
+      color: #94a3b8;
+      font-size: 1.05rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #334155;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      color: #f1f5f9;
+      padding: 12px 24px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    nav a:hover, nav a.active {
+      background: #475569;
+      color: #38bdf8;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 30px auto;
+      padding: 0 20px 60px 20px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 24px;
+      transition: transform 0.15s ease;
+    }
+
+    .back-btn:hover {
+      text-decoration: underline;
+      transform: translateX(-3px);
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .badge.template {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px dashed #22c55e;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 32px;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #0f172a;
+      font-size: 1.8rem;
+    }
+
+    .card h3 {
+      color: #1d4ed8;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 8px;
+      font-size: 1.3rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 22px 0;
+    }
+
+    .info-item strong {
+      display: block;
+      font-size: 0.8rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .info-item span {
+      font-weight: 600;
+      color: #0f172a;
+      font-size: 0.98rem;
+    }
+
+    .tip-box {
+      background: #eff6ff;
+      border: 1px dashed #93c5fd;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      color: #1e40af;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.15s ease;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>[Event Name / Title]</h1>
+    <p>Event recap, accomplishments, and project highlights</p>
+  </header>
+
+  <nav>
+    <a href="../index.html">All Projects</a>
+    <a href="events.html" class="active">Events</a>
+  </nav>
+
+  <div class="container">
+    <a href="events.html" class="back-btn">&larr; Back to Events Gallery</a>
+
+    <div class="badge-bar">
+      <span class="badge template">Event Template</span>
+      <span class="badge">Category (e.g. Hackathon / Workshop)</span>
+      <span class="badge">Topic (e.g. Robotics / Web Dev)</span>
+    </div>
+
+    <div class="card">
+      <h2>About This Event</h2>
+
+      <div class="tip-box">
+        💡 <strong>Quick Start:</strong> Copy this file (<code>cp events/sample_event.html events/your_event_name.html</code>) and edit the text fields below whenever you attend a new hackathon, workshop, or competition!
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Event</strong>
+          <span>[Event Name]</span>
+        </div>
+        <div class="info-item">
+          <strong>Date</strong>
+          <span>[Month Year or Date Range]</span>
+        </div>
+        <div class="info-item">
+          <strong>Location</strong>
+          <span>[City, State / University / Online]</span>
+        </div>
+        <div class="info-item">
+          <strong>Role / Focus</strong>
+          <span>[Lead Developer / Hacker / Participant]</span>
+        </div>
+      </div>
+
+      <h3>Overview & Key Highlights</h3>
+      <p>
+        Describe the event, the purpose of attending, and the overarching problem or theme you worked on. Mention who you collaborated with and the main milestones achieved.
+      </p>
+
+      <h3>Project / Activity Details</h3>
+      <ul>
+        <li><strong>Goal:</strong> What was the main objective of your project or demo?</li>
+        <li><strong>Technologies:</strong> What programming languages, hardware, or frameworks did you use?</li>
+        <li><strong>Accomplishments:</strong> What awards, recognitions, or finished products did you create?</li>
+      </ul>
+
+      <h3>Key Takeaways & Lessons Learned</h3>
+      <p>
+        Reflect on what you learned, any technical obstacles you overcame, and ideas for future follow-up projects.
+      </p>
+
+      <div class="btn-group">
+        <a href="events.html" class="btn">&larr; Back to Events Gallery</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

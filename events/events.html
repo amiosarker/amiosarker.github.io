@@ -3,139 +3,454 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Project Gallery</title>
+  <title>Events Gallery | Amio Sarker</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
       padding: 0;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
     }
 
     header {
-      background-color: #222;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       color: white;
-      padding: 20px;
+      padding: 40px 20px 30px 20px;
       text-align: center;
+      border-bottom: 3px solid #3b82f6;
+    }
+
+    header h1 {
+      margin: 0 0 10px 0;
+      font-size: 2.2rem;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      margin: 0;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      max-width: 650px;
+      margin: 0 auto;
     }
 
     nav {
       display: flex;
       justify-content: center;
-      background: #444;
+      background: #334155;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     nav a {
-      color: white;
-      padding: 14px 20px;
+      color: #f1f5f9;
+      padding: 14px 24px;
       display: inline-block;
       text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    nav a:hover {
-      background: #666;
+    nav a:hover, nav a.active {
+      background: #475569;
+      color: #38bdf8;
     }
 
-    .grid-container {
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: #0f172a;
+    }
+
+    .event-counter {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    /* Event Grid Layout */
+    .events-grid {
       display: grid;
-      /* Increased minmax to 200px so text-heavy overlays have room */
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-      padding: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
     }
 
-    .grid-item {
+    .event-card {
+      background: white;
+      border-radius: 14px;
       overflow: hidden;
-      border-radius: 10px;
-      transition: transform 0.3s ease;
-      height: 100%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      text-decoration: none;
+      color: inherit;
     }
 
-    /* Wrap elements cleanly if they use overlays */
-    .card-wrapper {
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px -4px rgba(0, 0, 0, 0.12);
+    }
+
+    .event-card-img-wrapper {
       position: relative;
       width: 100%;
-      height: 100%;
+      height: 200px;
+      background: #0f172a;
       overflow: hidden;
     }
 
-    .grid-item img {
+    .event-card-img-wrapper img {
       width: 100%;
       height: 100%;
-      display: block;
-      transition: transform 0.3s ease;
       object-fit: cover;
+      transition: transform 0.3s ease;
     }
 
-    .grid-item:hover img {
-      transform: scale(1.1);
+    .event-card:hover .event-card-img-wrapper img {
+      transform: scale(1.05);
     }
 
-    .grid-item a {
-      display: block;
-      height: 100%;
-    }
-
-    /* Overlay styles */
-    .card-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.85);
+    .event-card-body {
+      padding: 22px;
       display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .tag.summer-program {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .tag.hackathon {
+      background: #feebc8;
+      color: #c05621;
+    }
+
+    .tag.sample {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px dashed #22c55e;
+    }
+
+    .event-date {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .event-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+
+    .event-description {
+      font-size: 0.92rem;
+      color: #475569;
+      margin: 0 0 18px 0;
+      flex-grow: 1;
+      line-height: 1.55;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 14px;
+      margin-top: auto;
+    }
+
+    .read-more {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #2563eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .event-card:hover .read-more {
+      color: #1d4ed8;
+    }
+
+    /* Template Helper Card */
+    .template-card {
+      background: #fdfefe;
+      border: 2px dashed #cbd5e1;
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 10px;
-      font-size: 18px; /* Adjusted down from 32px to fit smaller screens */
-      font-weight: bold;
-      color: #333;
-      box-sizing: border-box;
       text-align: center;
+      min-height: 300px;
     }
 
-    /* Randomized heights using nth-child applied to the container */
-    .grid-item:nth-child(3n) {
-      height: 150px;
+    .template-card .icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
     }
 
-    .grid-item:nth-child(4n) {
-      height: 220px;
+    .template-card h3 {
+      margin: 0 0 8px 0;
+      color: #334155;
+      font-size: 1.15rem;
     }
 
-    .grid-item:nth-child(5n) {
-      height: 180px;
+    .template-card p {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin: 0 0 16px 0;
+      max-width: 260px;
+    }
+
+    /* Resume & Profile Bar */
+    .profile-card {
+      background: white;
+      border-radius: 14px;
+      padding: 28px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+      margin-bottom: 40px;
+    }
+
+    .profile-card h3 {
+      margin-top: 0;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skills-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 15px 0 20px 0;
+    }
+
+    .pill {
+      background: #f1f5f9;
+      color: #334155;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid #e2e8f0;
+    }
+
+    .resume-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: background 0.15s ease;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #2563eb;
+      border: 1px solid #2563eb;
+    }
+
+    .btn-outline:hover {
+      background: #eff6ff;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Welcome to My Project Gallery</h1>
-    <p>All the cool stuff I've been working on!</p>
+    <h1>Welcome to My Events Gallery</h1>
+    <p>A collection of hackathons, pre-college summer programs, workshops, and engineering challenges I've taken part in.</p>
   </header>
 
   <nav>
-    <a href="index.html">All Projects</a>
-    <a href="events.html">Events</a>
+    <a href="../index.html">All Projects</a>
+    <a href="events.html" class="active">Events</a>
   </nav>
 
-  <main class="grid-container">
-    <div class="grid-item">
-      <a href="piino_lab/binary_clock.html">
-        <div class="card-wrapper">
-          <img src="images/binary_clock.png" alt="Binary Clock">
-          <div class="card-overlay">Binary Clock</div>
+  <main class="container">
+    <div class="section-title">
+      <h2>Featured Events</h2>
+      <span class="event-counter">Displaying 2 events + 1 template</span>
+    </div>
+
+    <div class="events-grid">
+      <!-- 1. Tufts Pre-College AI Program -->
+      <a href="Tufts_summer_program.html" class="event-card">
+        <div class="event-card-img-wrapper">
+          <img src="images/smart_susan_thumb.jpg" alt="Tufts AI Program & SmartSusan Project" />
         </div>
+        <div class="event-card-body">
+          <div class="tags">
+            <span class="tag summer-program">Summer Program</span>
+            <span class="tag">AI & Machine Learning</span>
+          </div>
+          <div class="event-date">July 6 – July 17, 2026 &bull; Tufts University (CEEO)</div>
+          <h3 class="event-title">Engineering with Artificial Intelligence (AI)</h3>
+          <p class="event-description">
+            Two-week intensive AI engineering program at Tufts University. Built <strong>SmartSusan</strong>, a voice-commanded Lazy Susan using ElevenLabs real-time WebSocket speech scribe and custom YOLOv8 computer vision trained on Apple Silicon.
+          </p>
+          <div class="card-footer">
+            <span class="read-more">Read full event recap &rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 2. Boston University High School Hackathon -->
+      <a href="BU_hackathon.html" class="event-card">
+        <div class="event-card-img-wrapper">
+          <img src="images/BU-hackathon.jpg" alt="Boston University Hackathon Event" />
+        </div>
+        <div class="event-card-body">
+          <div class="tags">
+            <span class="tag hackathon">Hackathon</span>
+            <span class="tag">Graph Algorithms</span>
+          </div>
+          <div class="event-date">October 2026 &bull; Boston University</div>
+          <h3 class="event-title">Boston University High School Hackathon (BUHHS)</h3>
+          <p class="event-description">
+            Collaborative hackathon project tackling urban traffic optimization using OpenStreetMap (OSMnx) and NetworkX. Modeled Braess's Paradox to identify road closures that paradoxically reduce overall city congestion.
+          </p>
+          <div class="card-footer">
+            <span class="read-more">Read full event recap &rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 3. Sample / Template Event Card for New Additions -->
+      <a href="sample_event.html" class="template-card" style="text-decoration: none;">
+        <div class="icon">➕</div>
+        <span class="tag sample">Sample / Template Card</span>
+        <h3 style="margin-top: 10px;">Add Your Next Event</h3>
+        <p>Click to preview the template page, or duplicate the template file to easily showcase any new hackathon, summer lab, or competition!</p>
+        <span style="font-size: 0.82rem; color: #2563eb; font-weight: 600;">View template page &rarr;</span>
       </a>
     </div>
 
-    <div class="grid-item">
-      <a href="piino_lab/hand_v1.html">
-        <div class="card-wrapper">
-          <img src="images/hand.png" alt="Mediapipe Hand" />
-          <div class="card-overlay">Mediapipe Hand</div>
-        </div>
-      </a>
+    <!-- Background & Resume Highlights Section -->
+    <div class="profile-card">
+      <h3>👨‍💻 Background & Technical Skills</h3>
+      <p style="margin: 0; color: #475569; font-size: 0.95rem;">
+        Technologies and engineering tools used across my event projects, hackathons, and research prototypes:
+      </p>
+      
+      <div class="skills-pills">
+        <span class="pill">Python</span>
+        <span class="pill">PyTorch & YOLOv8</span>
+        <span class="pill">ElevenLabs Real-Time Voice API</span>
+        <span class="pill">WebSockets & AsyncIO</span>
+        <span class="pill">OpenCV & MediaPipe</span>
+        <span class="pill">Arduino & C++ (Mega 2560, Servos)</span>
+        <span class="pill">OSMnx & NetworkX</span>
+        <span class="pill">Blender 3D</span>
+        <span class="pill">Apple Silicon (MPS) GPU Acceleration</span>
+      </div>
+
+      <div class="resume-links">
+        <a href="https://docs.google.com/document/d/16LvCpw2PrdUSmGJ-MlIn-LDEauQ1sG4A/edit?usp=sharing" target="_blank" rel="noopener" class="btn">
+          📄 View My Full Resume (Google Docs)
+        </a>
+        <a href="https://github.com/amiosarker" target="_blank" rel="noopener" class="btn btn-outline">
+          🐙 GitHub Profile
+        </a>
+      </div>
     </div>
+
+    <!-- 
+    ========================================================================
+    HOW TO ADD A NEW EVENT:
+    1. Duplicate the event-card block below.
+    2. Replace the link, image path, date, tags, title, and description.
+    3. Create a matching detail HTML page (e.g., `events/your_new_event.html`).
+    ========================================================================
+
+    <a href="your_new_event.html" class="event-card">
+      <div class="event-card-img-wrapper">
+        <img src="images/your_event_photo.jpg" alt="Event Title" />
+      </div>
+      <div class="event-card-body">
+        <div class="tags">
+          <span class="tag hackathon">Hackathon</span>
+          <span class="tag">Robotics</span>
+        </div>
+        <div class="event-date">Month Year &bull; Location / Institution</div>
+        <h3 class="event-title">Event or Project Title</h3>
+        <p class="event-description">
+          Brief 2-3 sentence overview describing your team, your role, and what you built.
+        </p>
+        <div class="card-footer">
+          <span class="read-more">Read full event recap &rarr;</span>
+        </div>
+      </div>
+    </a>
+    ========================================================================
+    -->
   </main>
 </body>
-</html> 
+</html>

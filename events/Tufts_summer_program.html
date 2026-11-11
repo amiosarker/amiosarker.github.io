@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineering with AI - Tufts Summer Program | Amio Sarker</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.65;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      padding: 35px 20px;
+      text-align: center;
+      border-bottom: 3px solid #3b82f6;
+    }
+
+    header h1 {
+      margin: 0 0 10px 0;
+      font-size: 2.1rem;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      margin: 0;
+      color: #94a3b8;
+      font-size: 1.05rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #334155;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      color: #f1f5f9;
+      padding: 12px 24px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    nav a:hover, nav a.active {
+      background: #475569;
+      color: #38bdf8;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 30px auto;
+      padding: 0 20px 60px 20px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 24px;
+      transition: transform 0.15s ease;
+    }
+
+    .back-btn:hover {
+      text-decoration: underline;
+      transform: translateX(-3px);
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .badge.tufts {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .badge.ai {
+      background: #ede9fe;
+      color: #6d28d9;
+    }
+
+    .badge.cv {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 32px;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #0f172a;
+      font-size: 1.8rem;
+    }
+
+    .card h3 {
+      color: #1d4ed8;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 8px;
+      font-size: 1.3rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 22px 0;
+    }
+
+    .info-item strong {
+      display: block;
+      font-size: 0.8rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .info-item span {
+      font-weight: 600;
+      color: #0f172a;
+      font-size: 0.98rem;
+    }
+
+    .media-box {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 22px 0;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      background: #0f172a;
+    }
+
+    .media-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .caption {
+      padding: 10px 14px;
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 0.88rem;
+      font-style: italic;
+      text-align: center;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    ul {
+      padding-left: 22px;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 18px;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #0284c7;
+    }
+
+    pre code {
+      color: #e2e8f0;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #475569;
+    }
+
+    .btn-secondary:hover {
+      background: #334155;
+    }
+
+    .highlight-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+
+    .highlight-box h4 {
+      margin: 0 0 6px 0;
+      color: #1e40af;
+      font-size: 1.05rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tufts Pre-College: Engineering with Artificial Intelligence (AI)</h1>
+    <p>Summer Program Recap & Capstone Project Showcase</p>
+  </header>
+
+  <nav>
+    <a href="../index.html">All Projects</a>
+    <a href="events.html" class="active">Events</a>
+  </nav>
+
+  <div class="container">
+    <a href="events.html" class="back-btn">&larr; Back to Events Gallery</a>
+
+    <div class="badge-bar">
+      <span class="badge tufts">Tufts Pre-College</span>
+      <span class="badge ai">Artificial Intelligence</span>
+      <span class="badge cv">Computer Vision</span>
+      <span class="badge">ElevenLabs Real-Time Voice</span>
+    </div>
+
+    <div class="card">
+      <h2>Program Overview</h2>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Program</strong>
+          <span>Engineering with AI</span>
+        </div>
+        <div class="info-item">
+          <strong>Dates</strong>
+          <span>July 6 – July 17, 2026</span>
+        </div>
+        <div class="info-item">
+          <strong>Institution</strong>
+          <span>Tufts University (CEEO)</span>
+        </div>
+        <div class="info-item">
+          <strong>Instructor</strong>
+          <span>Gregory Marton</span>
+        </div>
+      </div>
+
+      <div class="media-box">
+        <img src="images/tufts_ai_banner.png" alt="Tufts Engineering with Artificial Intelligence Program Graphic" />
+        <div class="caption">Tufts Pre-College "Engineering with Artificial Intelligence (AI)" Program Artwork</div>
+      </div>
+
+      <p>
+        During July 2026, I attended the intensive two-week pre-college program <strong>Engineering with Artificial Intelligence (AI)</strong> at Tufts University, hosted by the Center for Engineering Education and Outreach (CEEO). The curriculum focused on building, training, and deploying real-world machine learning systems rather than just consuming them.
+      </p>
+
+      <h3>Curriculum & Key Concepts Explored</h3>
+      <ul>
+        <li><strong>Machine Learning Paradigms:</strong> Hands-on exploration of Supervised Learning, Unsupervised Clustering (k-NN / Nearest Neighbors), Reinforcement Learning, and Deep Learning representations.</li>
+        <li><strong>Computer Vision & Real-time Inference:</strong> Training custom YOLOv8 object detection models using transfer learning, custom synthetic dataset pipelines, and Apple Silicon MPS hardware acceleration.</li>
+        <li><strong>Generative AI & Latent Space:</strong> Prompt engineering with Gemini Pro and Microsoft Copilot, exploring latent space representations, and multi-modal models.</li>
+        <li><strong>Real-time Voice AI & WebSocket Streaming:</strong> Connecting streaming audio pipelines directly to low-latency cloud speech APIs for live interactive robotics control.</li>
+      </ul>
+
+      <div class="btn-group">
+        <a href="https://docs.google.com/presentation/d/1dkunzEAsBj_MfzYYdybv0wVK7evpratk/edit?usp=drive_link" target="_blank" rel="noopener" class="btn">
+          📊 View Welcome & Intro Slides (PPTX)
+        </a>
+      </div>
+    </div>
+
+    <!-- Capstone Project Section -->
+    <div class="card">
+      <h2>Featured Capstone: SmartSusan</h2>
+      <p style="font-size: 1.1rem; color: #475569; font-weight: 500;">
+        An AI-powered voice-commanded Lazy Susan that recognizes snacks with computer vision and automatically dispenses ("yeets") them on demand.
+      </p>
+
+      <div class="media-box">
+        <img src="images/smart_susan_thumb.jpg" alt="SmartSusan Project Demo Snapshot" />
+        <div class="caption">SmartSusan live demo: automated snack detection and real-time voice command processing</div>
+      </div>
+
+      <div class="highlight-box">
+        <h4>My Key Contributions & Branch: <code>amio_elevenlabs</code></h4>
+        <p style="margin: 0;">
+          I architected and implemented the real-time speech detection and streaming audio scribe pipeline using ElevenLabs' WebSocket API, allowing users to talk naturally to SmartSusan. I also built synthetic dataset generation and YOLOv8 training routines.
+        </p>
+      </div>
+
+      <h3>Technical Architecture</h3>
+      <ul>
+        <li>
+          <strong>Real-Time Speech Detection (ElevenLabs Scribe WebSocket):</strong>
+          Wrote <code>speech_detection_tufts.py</code> using Python <code>asyncio</code> and <code>websockets</code>. Captured live microphone input via <code>sounddevice</code> at 16kHz mono PCM 16-bit, buffered audio chunks through an async queue, and streamed them to ElevenLabs' <code>scribe_v2_realtime</code> model using server-side Voice Activity Detection (VAD). Transcriptions are parsed on-the-fly to trigger physical dispensing commands.
+        </li>
+        <li>
+          <strong>YOLOv8 Custom Snack Recognition:</strong>
+          Built an automated training workflow (<code>data_scraper.py</code>, <code>background_remover.py</code>, and <code>dataset_generator.py</code>) that creates synthetic training images of target snacks over varied backgrounds, trained custom YOLOv8n weights on Apple Silicon (<code>device='mps'</code>), and deployed live camera inference with OpenCV.
+        </li>
+      </ul>
+
+      <h3>Speech Detection Pipeline (Code Highlight)</h3>
+      <pre><code>import asyncio, base64, json, websockets
+import sounddevice as sd
+
+MODEL_ID = "scribe_v2_realtime"
+WS_URL = f"wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id={MODEL_ID}&commit_strategy=vad"
+
+async def send_audio(websocket):
+    while True:
+        pcm_chunk = await audio_queue.get()
+        message = {
+            "message_type": "input_audio_chunk",
+            "audio_base_64": base64.b64encode(pcm_chunk).decode("utf-8")
+        }
+        await websocket.send(json.dumps(message))</code></pre>
+
+      <div class="btn-group">
+        <a href="https://github.com/fluxxrider/smartsusan" target="_blank" rel="noopener" class="btn">
+          🐙 SmartSusan GitHub Repository
+        </a>
+        <a href="https://github.com/fluxxrider/smartsusan/tree/amio_elevenlabs" target="_blank" rel="noopener" class="btn btn-secondary">
+          🌿 View My <code>amio_elevenlabs</code> Branch
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
