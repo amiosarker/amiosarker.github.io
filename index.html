@@ -3,139 +3,418 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Project Gallery</title>
+  <title>Project Gallery | Amio Sarker</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
       padding: 0;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
     }
 
     header {
-      background-color: #222;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       color: white;
-      padding: 20px;
+      padding: 40px 20px 30px 20px;
       text-align: center;
+      border-bottom: 3px solid #3b82f6;
+    }
+
+    header h1 {
+      margin: 0 0 10px 0;
+      font-size: 2.2rem;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      margin: 0;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      max-width: 650px;
+      margin: 0 auto;
     }
 
     nav {
       display: flex;
       justify-content: center;
-      background: #444;
+      background: #334155;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     nav a {
-      color: white;
-      padding: 14px 20px;
+      color: #f1f5f9;
+      padding: 14px 24px;
       display: inline-block;
       text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    nav a:hover {
-      background: #666;
+    nav a:hover, nav a.active {
+      background: #475569;
+      color: #38bdf8;
     }
 
-    .grid-container {
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: #0f172a;
+    }
+
+    .project-counter {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    /* Projects Grid Layout */
+    .projects-grid {
       display: grid;
-      /* Increased minmax to 200px so text-heavy overlays have room */
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-      padding: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
     }
 
-    .grid-item {
+    .project-card {
+      background: white;
+      border-radius: 14px;
       overflow: hidden;
-      border-radius: 10px;
-      transition: transform 0.3s ease;
-      height: 100%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      text-decoration: none;
+      color: inherit;
     }
 
-    /* Wrap elements cleanly if they use overlays */
-    .card-wrapper {
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px -4px rgba(0, 0, 0, 0.12);
+    }
+
+    .project-card-img-wrapper {
       position: relative;
       width: 100%;
-      height: 100%;
+      height: 200px;
+      background: #0f172a;
       overflow: hidden;
     }
 
-    .grid-item img {
+    .project-card-img-wrapper img {
       width: 100%;
       height: 100%;
-      display: block;
-      transition: transform 0.3s ease;
       object-fit: cover;
+      transition: transform 0.3s ease;
     }
 
-    .grid-item:hover img {
-      transform: scale(1.1);
+    .project-card:hover .project-card-img-wrapper img {
+      transform: scale(1.05);
     }
 
-    .grid-item a {
-      display: block;
-      height: 100%;
-    }
-
-    /* Overlay styles */
-    .card-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.85);
+    .project-card-body {
+      padding: 22px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .tag.cv {
+      background: #ede9fe;
+      color: #6d28d9;
+    }
+
+    .tag.robotics {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .tag.hardware {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .tag.embedded {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .tag.ai {
+      background: #fae8ff;
+      color: #86198f;
+    }
+
+    .tag.capstone {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .project-subtitle {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+
+    .project-description {
+      font-size: 0.92rem;
+      color: #475569;
+      margin: 0 0 18px 0;
+      flex-grow: 1;
+      line-height: 1.55;
+    }
+
+    .card-footer {
+      display: flex;
       align-items: center;
-      padding: 10px;
-      font-size: 18px; /* Adjusted down from 32px to fit smaller screens */
-      font-weight: bold;
-      color: #333;
-      box-sizing: border-box;
-      text-align: center;
+      justify-content: space-between;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 14px;
+      margin-top: auto;
     }
 
-    /* Randomized heights using nth-child applied to the container */
-    .grid-item:nth-child(3n) {
-      height: 150px;
+    .read-more {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #2563eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    .grid-item:nth-child(4n) {
-      height: 220px;
+    .project-card:hover .read-more {
+      color: #1d4ed8;
     }
 
-    .grid-item:nth-child(5n) {
-      height: 180px;
+    /* Background & Skills Profile Card */
+    .profile-card {
+      background: white;
+      border-radius: 14px;
+      padding: 28px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+      margin-bottom: 40px;
+    }
+
+    .profile-card h3 {
+      margin-top: 0;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skills-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 15px 0 20px 0;
+    }
+
+    .pill {
+      background: #f1f5f9;
+      color: #334155;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid #e2e8f0;
+    }
+
+    .resume-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: background 0.15s ease;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #2563eb;
+      border: 1px solid #2563eb;
+    }
+
+    .btn-outline:hover {
+      background: #eff6ff;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Welcome to My Project Gallery</h1>
-    <p>All the cool stuff I've been working on!</p>
+    <p>A showcase of my software, hardware robotics, and machine learning engineering projects.</p>
   </header>
 
   <nav>
-    <a href="index.html">All Projects</a>
+    <a href="index.html" class="active">All Projects</a>
     <a href="events/events.html">Events</a>
   </nav>
 
-  <main class="grid-container">
-    <div class="grid-item">
-      <a href="piino_lab/binary_clock.html">
-        <div class="card-wrapper">
-          <img src="images/binary_clock.png" alt="Binary Clock">
-          <div class="card-overlay">Binary Clock</div>
+  <main class="container">
+    <div class="section-title">
+      <h2>Featured Projects</h2>
+      <span class="project-counter">Displaying 3 projects</span>
+    </div>
+
+    <div class="projects-grid">
+      <!-- 1. MediaPipe Hand Tracking & Servo Control -->
+      <a href="piino_lab/hand_v1.html" class="project-card">
+        <div class="project-card-img-wrapper">
+          <img src="images/hand.png" alt="MediaPipe Hand Tracking" />
+        </div>
+        <div class="project-card-body">
+          <div class="tags">
+            <span class="tag cv">Computer Vision</span>
+            <span class="tag robotics">Robotics</span>
+          </div>
+          <div class="project-subtitle">Google MediaPipe &bull; Arduino Mega 2560 &bull; Python</div>
+          <h3 class="project-title">MediaPipe Hand Tracking & Servo Control</h3>
+          <p class="project-description">
+            Real-time 3D hand landmark detection using Google MediaPipe and OpenCV. Computes finger joint angles in Python and streams them over serial to an Arduino Mega 2560 to mirror hand movements on robotic servos.
+          </p>
+          <div class="card-footer">
+            <span class="read-more">View project details &rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 2. Binary Clock LED Demo -->
+      <a href="piino_lab/binary_clock.html" class="project-card">
+        <div class="project-card-img-wrapper">
+          <img src="images/binary_clock.png" alt="Binary Clock LED Demo" />
+        </div>
+        <div class="project-card-body">
+          <div class="tags">
+            <span class="tag hardware">Hardware</span>
+            <span class="tag embedded">Arduino C++</span>
+          </div>
+          <div class="project-subtitle">Embedded Systems &bull; Microcontroller &bull; C++</div>
+          <h3 class="project-title">Binary Clock LED Demo</h3>
+          <p class="project-description">
+            Hardware LED binary clock built with Arduino. Demonstrates binary counting, bit manipulation, and recursive state updating to light a bank of 6 LEDs representing the current second (0–59).
+          </p>
+          <div class="card-footer">
+            <span class="read-more">View project details &rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 3. SmartSusan: AI Voice & Vision Snack Dispenser -->
+      <a href="events/Tufts_summer_program.html" class="project-card">
+        <div class="project-card-img-wrapper">
+          <img src="events/images/smart_susan_thumb.jpg" alt="SmartSusan Project" />
+        </div>
+        <div class="project-card-body">
+          <div class="tags">
+            <span class="tag ai">Voice & Vision AI</span>
+            <span class="tag capstone">Tufts Capstone</span>
+          </div>
+          <div class="project-subtitle">ElevenLabs Scribe &bull; YOLOv8 &bull; Apple Silicon MPS</div>
+          <h3 class="project-title">SmartSusan: AI Voice & Vision Snack Dispenser</h3>
+          <p class="project-description">
+            Voice-commanded smart Lazy Susan utilizing ElevenLabs real-time WebSocket speech recognition and custom YOLOv8 object detection trained on Apple Silicon to recognize and dispense snacks on demand.
+          </p>
+          <div class="card-footer">
+            <span class="read-more">View project details &rarr;</span>
+          </div>
         </div>
       </a>
     </div>
 
-    <div class="grid-item">
-      <a href="piino_lab/hand_v1.html">
-        <div class="card-wrapper">
-          <img src="images/hand.png" alt="Mediapipe Hand" />
-          <div class="card-overlay">Mediapipe Hand</div>
-        </div>
-      </a>
+    <!-- Background & Skills Profile Card -->
+    <div class="profile-card">
+      <h3>👨‍💻 Background & Technical Skills</h3>
+      <p style="margin: 0; color: #475569; font-size: 0.95rem;">
+        Technologies and engineering tools used across my projects, hardware builds, and research prototypes:
+      </p>
+      
+      <div class="skills-pills">
+        <span class="pill">Python</span>
+        <span class="pill">PyTorch & YOLOv8</span>
+        <span class="pill">ElevenLabs Real-Time Voice API</span>
+        <span class="pill">WebSockets & AsyncIO</span>
+        <span class="pill">OpenCV & MediaPipe</span>
+        <span class="pill">Arduino & C++ (Mega 2560, Servos)</span>
+        <span class="pill">OSMnx & NetworkX</span>
+        <span class="pill">Blender 3D</span>
+        <span class="pill">Apple Silicon (MPS) GPU Acceleration</span>
+      </div>
+
+      <div class="resume-links">
+        <a href="https://docs.google.com/document/d/16LvCpw2PrdUSmGJ-MlIn-LDEauQ1sG4A/edit?usp=sharing" target="_blank" rel="noopener" class="btn">
+          📄 View My Full Resume (Google Docs)
+        </a>
+        <a href="https://github.com/amiosarker" target="_blank" rel="noopener" class="btn btn-outline">
+          🐙 GitHub Profile
+        </a>
+      </div>
     </div>
   </main>
 </body>
-</html> 
+</html>
