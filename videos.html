@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Videos | Amio Sarker</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      padding: 40px 20px 30px 20px;
+      text-align: center;
+      border-bottom: 3px solid #3b82f6;
+    }
+
+    header h1 { margin: 0 0 10px 0; font-size: 2.2rem; letter-spacing: -0.5px; }
+    header p { color: #94a3b8; font-size: 1.1rem; max-width: 650px; margin: 0 auto; }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #334155;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    nav a {
+      color: #f1f5f9;
+      padding: 14px 24px;
+      display: inline-block;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    nav a:hover, nav a.active { background: #475569; color: #38bdf8; }
+
+    .container { max-width: 1100px; margin: 40px auto; padding: 0 20px 80px; }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .section-title h2 { margin: 0; font-size: 1.6rem; color: #0f172a; }
+    .counter { color: #64748b; font-size: 0.95rem; }
+
+    .video-list { display: flex; flex-direction: column; gap: 22px; }
+
+    .video-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    }
+
+    .video-main { display: flex; gap: 20px; padding: 18px; flex-wrap: wrap; }
+
+    .video-embed {
+      flex: 1 1 380px;
+      max-width: 520px;
+      aspect-ratio: 16 / 9;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #0f172a;
+    }
+    .video-embed iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    .video-info { flex: 1 1 260px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+    .video-info h3 { margin: 0; font-size: 1.3rem; color: #0f172a; }
+
+    .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge {
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+    .badge.age { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+    .badge.unlisted { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+
+    .dropdown-btn {
+      align-self: flex-start;
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .dropdown-btn:hover { background: #1d4ed8; }
+    .dropdown-btn .arrow { display: inline-block; transition: transform 0.2s ease; margin-left: 6px; }
+    .video-card.open .dropdown-btn .arrow { transform: rotate(180deg); }
+
+    .video-desc {
+      display: none;
+      padding: 0 18px 18px 18px;
+      color: #475569;
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .video-card.open .video-desc { display: block; }
+    .video-desc-inner { border-top: 1px solid #e2e8f0; padding-top: 14px; }
+    .video-desc a { color: #2563eb; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Videos</h1>
+    <p>My YouTube videos in chronological order, with my age when each was made.</p>
+  </header>
+
+  <nav>
+    <a href="index.html">All Projects</a>
+    <a href="events/events.html">Events</a>
+    <a href="artwork.html">Artwork</a>
+    <a href="videos.html" class="active">Videos</a>
+  </nav>
+
+  <div class="container">
+    <div class="section-title">
+      <h2>🎬 Video Timeline</h2>
+      <span class="counter" id="counter"></span>
+    </div>
+    <div class="video-list" id="videoList"></div>
+  </div>
+
+  <script>
+    // Add more videos here (e.g. unlisted ones). visibility: "Public" or "Unlisted"; date: YYYY-MM-DD
+    const videos = [
+      { id: "voWGdsSgY1Q", title: "Satisfying Blender Render Spiral", date: "2021-07-21", visibility: "Public",
+        description: "Sorry for the break. There has been a lot of stuff going on. Expect more videos soon but for now, here's a satisfying Blender Render made by me." },
+      { id: "c50CJruGx48", title: "Athena's birth", date: "2023-06-16", visibility: "Public",
+        description: "this was a school project in which I put WAY too much effort in." },
+      { id: "0w2KmPuC9To", title: "How I did my first blender challenge (I almost failed)", date: "2023-06-25", visibility: "Public",
+        description: "Sorry for the wait, it takes a while to make these videos" },
+      { id: "VcD-OULhLXw", title: "I MADE A REAL BARBENHEIMER TRAILER IN 72 HOURS!", date: "2023-08-02", visibility: "Public",
+        description: "I hope you liked the video. Some parts were wonky in the final trailer ngl :/ Also to align the background with the Thomas the tank engine bit I should have made a sphere projection on the background and removed the letterboxing in the original clip. Anyway, this is the Ian Hubert tracking tutorial: https://www.youtube.com/watch?v=lY8Ol2n4o4A&ab_channel=IanHubert\n\nMy Tiktok: https://www.tiktok.com/@amioiscool\nMy Instagram: https://www.instagram.com/amnomrombus/\nMy Twitter: https://twitter.com/its_amioS" },
+      { id: "Zdr_cuwqkmc", title: "MOTHMAN?!?!(real confirmed?1?!)", date: "2023-11-25", visibility: "Public",
+        description: "I made this video late. It was supposed to be released on Halloween but I missed it by a month. Ope. Thanks to Hexagoon/Pentagoon for helping. I hope you like the video!\n\nMothman pins:\nhttps://www.amazon.com/Gothic-Mothman-Backpack-Clothes-Jewelry/dp/B0CJ2M9ZY8/ref=sr_1_4?crid=3NULZDVBSD9KM&keywords=mothman%2Bpins&qid=1699805565&s=apparel&sprefix=mothman%2Bpins%2Cfashion%2C203&sr=1-4&th=1" },
+      { id: "IwQLyG_BfJ8", title: "how to shade like a pro", date: "2023-12-19", visibility: "Public",
+        description: "i hope you liked the video" }
+    ];
+
+    const BIRTH = { y: 2011, m: 1, d: 9 };
+
+    function ageAt(dateStr) {
+      const [y, m, d] = dateStr.split('-').map(Number);
+      let age = y - BIRTH.y;
+      if (m < BIRTH.m || (m === BIRTH.m && d < BIRTH.d)) age--;
+      return age;
+    }
+
+    function formatDate(dateStr) {
+      const [y, m, d] = dateStr.split('-').map(Number);
+      return new Date(y, m - 1, d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function linkify(s) {
+      return escapeHtml(s).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+    }
+
+    videos.sort((a, b) => a.date.localeCompare(b.date));
+
+    document.getElementById('counter').textContent = `${videos.length} videos`;
+    document.getElementById('videoList').innerHTML = videos.map((v, i) => `
+      <article class="video-card" id="card-${i}">
+        <div class="video-main">
+          <div class="video-embed">
+            <iframe src="https://www.youtube.com/embed/${v.id}" title="${escapeHtml(v.title)}" loading="lazy"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <h3>${escapeHtml(v.title)}</h3>
+            <div class="badges">
+              <span class="badge">📅 ${formatDate(v.date)}</span>
+              <span class="badge age">🎂 Age ${ageAt(v.date)}</span>
+              <span class="badge ${v.visibility === 'Unlisted' ? 'unlisted' : ''}">${v.visibility}</span>
+            </div>
+            <button class="dropdown-btn" onclick="toggleDesc(${i})" aria-expanded="false" aria-controls="desc-${i}">
+              Description <span class="arrow">▼</span>
+            </button>
+          </div>
+        </div>
+        <div class="video-desc" id="desc-${i}"><div class="video-desc-inner">${linkify(v.description)}</div></div>
+      </article>
+    `).join('');
+
+    function toggleDesc(i) {
+      const card = document.getElementById('card-' + i);
+      const open = card.classList.toggle('open');
+      card.querySelector('.dropdown-btn').setAttribute('aria-expanded', open);
+    }
+  </script>
+</body>
+</html>
+
