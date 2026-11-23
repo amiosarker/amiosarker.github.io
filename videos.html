@@ -188,7 +188,7 @@
       return escapeHtml(s).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
     }
 
-    videos.sort((a, b) => a.date.localeCompare(b.date));
+    videos.sort((a, b) => b.date.localeCompare(a.date)); // newest first
 
     document.getElementById('counter').textContent = `${videos.length} videos`;
     document.getElementById('videoList').innerHTML = videos.map((v, i) => `
