@@ -170,6 +170,16 @@
       color: #c05621;
     }
 
+    .tag.science-fair {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .tag.robotics {
+      background: #fae8ff;
+      color: #86198f;
+    }
+
     .tag.sample {
       background: #dcfce7;
       color: #15803d;
@@ -339,11 +349,32 @@
   <main class="container">
     <div class="section-title">
       <h2>Featured Events</h2>
-      <span class="event-counter">Displaying 2 events</span>
+      <span class="event-counter">Displaying 3 events</span>
     </div>
 
     <div class="events-grid">
-      <!-- 1. Tufts Pre-College AI Program -->
+      <!-- 1. Braintree Science Fair -->
+      <a href="braintree_science_fair.html" class="event-card">
+        <div class="event-card-img-wrapper">
+          <img src="images/braintree_science_fair.jpg" alt="Braintree Science Fair - East Middle School and Braintree High School STEM Showcase" />
+        </div>
+        <div class="event-card-body">
+          <div class="tags">
+            <span class="tag science-fair">Science Fair</span>
+            <span class="tag robotics">Robotics Club</span>
+          </div>
+          <div class="event-date">Braintree, MA &bull; East Middle School & Braintree High School</div>
+          <h3 class="event-title">Braintree Science Fair</h3>
+          <p class="event-description">
+            A district-wide demonstration showcasing what East Middle School and Braintree High School have to offer in science and STEM. Represented the Robotics Club with live interactive demonstrations of my computer vision robotic hand project, which tracks hand movements via Google MediaPipe and mirrors finger joint angles on Arduino-driven servos.
+          </p>
+          <div class="card-footer">
+            <span class="read-more">Read full event recap &rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 2. Tufts Pre-College AI Program -->
       <a href="Tufts_summer_program.html" class="event-card">
         <div class="event-card-img-wrapper">
           <img src="images/tufts_campus.jpg" alt="Tufts AI Summer Program" />
@@ -364,7 +395,7 @@
         </div>
       </a>
 
-      <!-- 2. Boston University High School Hackathon -->
+      <!-- 3. Boston University High School Hackathon -->
       <a href="BU_hackathon.html" class="event-card">
         <div class="event-card-img-wrapper">
           <img src="images/BU-hackathon.jpg" alt="Boston University Hackathon Event" />
